@@ -1,8 +1,8 @@
 import { Table } from 'antd';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import Layout from '../../components/Layout'
+import api from "../../redux/api";
 
 const Customers = () => {
 
@@ -14,7 +14,7 @@ const Customers = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/bills/getbills');
+      const {data} = await api.get('/api/bills/getbills');
       setBillsData(data);
       dispatch({
         type: "HIDE_LOADING",

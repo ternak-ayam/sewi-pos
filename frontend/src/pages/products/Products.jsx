@@ -1,10 +1,11 @@
-import axios from 'axios';
+
 import React, {useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux';
 import LayoutApp from '../../components/Layout'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Table, message } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
+import api from "../../redux/api";
 
 const Products = () => {
 
@@ -18,7 +19,7 @@ const Products = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/products/getproducts');
+      const {data} = await api.get('/api/products/getproducts');
       setProductData(data);
       dispatch({
         type: "HIDE_LOADING",
@@ -42,7 +43,7 @@ const Products = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      await axios.post('/api/products/deleteproducts', {productId:record._id});
+      await api.post('/api/products/deleteproducts', {productId:record._id});
       message.success("Product Deleted Successfully!")
       getAllProducts();
       setPopModal(false);
@@ -93,7 +94,7 @@ const Products = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-        const res = await axios.post('/api/products/addproducts', value);
+        const res = await api.post('/api/products/addproducts', value);
         message.success("Product Added Successfully!")
         getAllProducts();
         setPopModal(false);
@@ -114,7 +115,7 @@ const Products = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-       await axios.put('/api/products/updateproducts', {...value, productId:editProduct._id});
+       await api.put('/api/products/updateproducts', {...value, productId:editProduct._id});
         message.success("Product Updated Successfully!")
         getAllProducts();
         setPopModal(false);

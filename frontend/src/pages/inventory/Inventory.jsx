@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import LayoutApp from "../../components/Layout";
-import axios from "axios";
 import { useState } from "react";
 import { Button, Form, Input, Modal, Select, Table, message } from "antd";
 import FormItem from "antd/lib/form/FormItem";
+import api from "../../redux/api";
 
 function Inventory() {
   const [data, setData] = useState([]);
@@ -13,7 +13,7 @@ function Inventory() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get("/api/products/getproducts");
+        const response = await api.get("/api/products/getproducts");
         console.log(response);
         setData(response.data);
       } catch (error) {
@@ -56,7 +56,7 @@ function Inventory() {
 
   const handlerSubmit = async (value) => {
     try {
-      await axios.put("/api/products/updateproducts", { ...value, productId: stock._id });
+      await api.put("/api/products/updateproducts", { ...value, productId: stock._id });
       message.success("Data Successfully Edited");
       setEditModal(false);
     } catch (error) {

@@ -16,14 +16,19 @@ const Login = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const res = await axios.post('/api/users/login', value);
+      await axios.post('/api/users/login', value).then((res) => {
+        localStorage.setItem("auth", res.data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+        message.success(res.data.message);
+
+        navigate("/");
+      }).catch((err) => {
+        message.error(err.response.data.message)
+      });
+
       dispatch({
         type: "HIDE_LOADING",
       });
-      message.success("User Login Successfully!");
-      localStorage.setItem("auth", JSON.stringify(res.data));
-      navigate("/");
-      
 
     } catch(error) {
       dispatch({

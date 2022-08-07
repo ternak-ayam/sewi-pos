@@ -5,6 +5,7 @@ import { Row, Col } from "antd";
 import Product from "../../components/Product";
 import { useDispatch } from "react-redux";
 import { Table, message } from "antd";
+import api from "../../redux/api";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const Home = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-        const { data } = await axios.get("/api/products/getproducts");
+        const { data } = await api.get("/api/products/getproducts");
         setProductData(data);
         setFilteredData(data);
         dispatch({

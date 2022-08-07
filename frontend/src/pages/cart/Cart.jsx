@@ -5,7 +5,7 @@ import { DeleteOutlined, PlusCircleOutlined, MinusCircleOutlined } from "@ant-de
 import { Button, Form, Input, message, Modal, Select, Table } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../redux/api";
 
 const Cart = () => {
   const [subTotal, setSubTotal] = useState(0);
@@ -85,14 +85,22 @@ const Cart = () => {
         subTotal,
         tax: Number(((subTotal / 100) * 10).toFixed(2)),
         totalAmount: Number((Number(subTotal) + Number(((subTotal / 100) * 10).toFixed(2))).toFixed(2)),
-        userId: JSON.parse(localStorage.getItem("auth"))._id,
+        userId: JSON.parse(localStorage.getItem("user"))._id,
       };
-      await axios.post("/api/bills/addbills", newObject);
+
+      await api.post("/api/bills/addbills", newObject);
+
+      newObject.cartItems.map((item) => {
+        api.put('/api/products/updateproducts', {inventory: item.inventory - item.quantity, productId: item._id});
+      });
+
       dispatch({
         type: "EMPTY_CART",
       });
+
       message.success("Bill Generated!");
       navigate("/bills");
+
     } catch (error) {
       message.error("Error!");
       console.log(error);

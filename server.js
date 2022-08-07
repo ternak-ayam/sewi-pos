@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import productRouter from './routes/productsRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import billsRouter from './routes/billsRoutes.js';
+import isAuth from "./middleware/isAuth.js";
 //require('colors');
 
 dotenv.config();
@@ -29,9 +30,10 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan("dev"));
 
 //routes
-app.use('/api/products/', productRouter);
 app.use('/api/users/', userRouter);
-app.use('/api/bills/', billsRouter);
+
+app.use('/api/products/', isAuth, productRouter);
+app.use('/api/bills/', isAuth, billsRouter);
 
 //Create Port 
 const PORT = process.env.PORT || 5000;
